@@ -8,7 +8,7 @@ This project contains code and spreadsheet files to illustrate the models shown 
 
 In that article, we start from the rectangular-choice-of-technology (RCOT) model described by [Duchin & Levine (2011)](https://doi.org/10.1080/09535314.2011.571238), a linear programming model used for scenario analysis within the field of input-output (IO) analysis. That model is based on square IO tables, some elements of which can then be augmented along their column dimension to allow for the choice among multiple alternative technologies to produce a homogeneous output.
 
-We have identified potential caveats concerning the unit and shape of the underlying data as well as the reallocation of secondary products when converting supply-use tables (SUTs) into IO tables. Based on these insights, we argue to opt for a model generalisation, SU-RCOT, that is not (or only to a limited degree) subject to the described limitations of the original IO-RCOT model. Essentially, we move thus from a model artifically based on pseudo-single production to a model that covers joint production.
+We have identified potential caveats concerning the units and shape of the underlying data as well as the method of reallocating secondary products when converting supply-use tables (SUTs) into IO tables. Based on these insights, we argue to opt for a model generalisation, SU-RCOT, that is not (or only to a limited degree) subject to the described limitations of the original IO-RCOT model. Essentially, we move thus from a model artifically based on pseudo-single production to a model that covers joint production.
 
 While most of the arguments made in the manuscript are comprehensible by simply examining the formulas in the main text and PDF appendix, we want to illustrate the use of the generalised RCOT model here.
 
@@ -34,11 +34,11 @@ RectangularChoice/
 │
 ├───notebooks
 │       SU-RCOT_c+i-.ipynb
-|       SU_RCOT_c+i-.html
+│       SU_RCOT_c+i-.html
 │       SU-RCOT_c-i+.ipynb
-|       SU_RCOT_c-i+.html
+│       SU_RCOT_c-i+.html
 │       SU-RCOT_c=i.ipynb
-|       SU_RCOT_c=i.html
+│       SU_RCOT_c=i.html
 │
 └───src
         Auxiliary.jl
@@ -47,7 +47,6 @@ RectangularChoice/
         RCOT_model.jl
         RectangularChoice.jl
         SUT_structure.jl
-
 ```
 
 Specifically, this project contains:
@@ -55,7 +54,7 @@ Specifically, this project contains:
 - the ``Manifest.toml`` and ``Project.toml`` files included for reproducibility (see below). For background see [here](https://pkgdocs.julialang.org/v1/toml-files/).
 - an empty ``settings.json`` file, created by default.
 - in ``data``, Excel files containing illustrative data that are imported into the three Jupyter notebooks.
-- in ``notebooks``, Jupyter notebooks that explore the three cases of commodity-industry (c-i) dimensions, i.e. when [c>i](./SU-RCOT_c+i-.ipynb), [c<i](./SU-RCOT_c-i+.ipynb), and [c=i](./SU-RCOT_c=i.ipynb). (These Jupyter notebooks have also been included in html format for accessibility (if the reader/user has no Jupyter environment.)
+- in ``notebooks``, Jupyter notebooks that explore the three cases of commodity-industry (c-i) dimensions, i.e. when [c>i](./notebooks/SU-RCOT_c+i-.ipynb), [c<i](./notebooks/SU-RCOT_c-i+.ipynb), and [c=i](./notebooks/SU-RCOT_c=i.ipynb). (These Jupyter notebooks have also been included in html format for accessibility (if the reader/user has no Jupyter environment.)
 - in ``src``, Julia code files that are called from within the Jupyter notebooks. Specifically:
     - ``SUT_structure.jl`` organises the SUT data imported into the Jupyter notebooks.
     - ``Constructs.jl`` uses these SUT structures and converts them through reallocation of secondary products into structures based on single production.
@@ -64,7 +63,7 @@ Specifically, this project contains:
     - ``Auxiliary.jl`` contains helper functions.
     - ``RectangularChoice``, a legacy file from when creating the project.
 
-To explore the model, start with the [c>i](./SU-RCOT_c+i-.ipynb) notebook, as this is the most detailed one. The two other notebooks are kept shorter while still highlighting basic properties of the model.
+To explore the model, start with the [c>i](./notebooks/SU-RCOT_c+i-.ipynb) notebook, as this is the most detailed one. The two other notebooks are kept shorter while still highlighting basic properties of the model.
 
 ## Reproducibility
 While the included Jupyter notebooks in html format already show the output, one may easily reproduce this output and/ or modify the files. This can be done in various settings. At time of writing, a convenient choice is to install Julia, VS Code, and the respective Julia extension as per [here](https://www.julia-vscode.org/docs/dev/gettingstarted/); moreover, the [Jupyter extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) for VS Code must be installed. As described in ``Manifest.toml``, Julia version 1.9.0 was used in this project.
