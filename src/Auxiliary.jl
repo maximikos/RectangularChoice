@@ -1,21 +1,5 @@
-#=
-macro Name(arg)
-    return string(:($arg))
-end
-
-macro name(x)
-    quote
-        ($(esc(x)), $(string(x)))
-    end
-end
-
-macro name2(name)
-    return println(name)
-end
-=#
-
 function model_solution(model)
-
+# Returns solution parameters after optimisation
     @show termination_status(model)
     @show primal_status(model)
     @show dual_status(model)

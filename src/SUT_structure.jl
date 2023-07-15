@@ -82,19 +82,6 @@ sum(bar.U,dims=2) + bar.e
                 rethrow()
             end
 
-            #=
-            if t == :"physical"
-                @info "The SUT system is given in physical units such that no total industry output may be calculated."
-                this.g = nothing
-                this.B = nothing
-                this.C = nothing
-                this.S = nothing
-                sum(this.V',dims=2) == sum(this.U,dims=2) + this.e || @warn("The SUT-system is not balanced.")
-            elseif sum(this.V',dims=2) != sum(this.U,dims=2) + this.e && sum(this.V,dims=2) != transpose(sum(this.U,dims=1) + this.pii'*this.F)
-                @warn("The SUT-system is not balanced.")
-            end
-            =#
-
             @info("A structure for supply-use elements was set up. Changing individual elements will not change others automatically.")
             return this
         end

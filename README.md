@@ -65,6 +65,8 @@ Specifically, this project contains:
 
 To explore the model, start with the [c>i](./notebooks/SU-RCOT_c+i-.ipynb) notebook, as this is the most detailed one. The two other notebooks are kept shorter while still highlighting basic properties of the model.
 
+Please note that the anonymised version of the repository may not display all text correctly (e.g. cutting off lines). In that case, downloading the material directly allows to view and interact with it appropriately.
+
 ## Reproducibility
 While the included Jupyter notebooks in html format already show the output, one may easily reproduce this output and/ or modify the files. This can be done in various settings. At time of writing, a convenient choice is to install Julia, VS Code, and the respective Julia extension as per [here](https://www.julia-vscode.org/docs/dev/gettingstarted/); moreover, the [Jupyter extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) for VS Code must be installed. As described in ``Manifest.toml``, Julia version 1.9.0 was used in this project.
 
