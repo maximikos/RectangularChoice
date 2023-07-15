@@ -1,7 +1,7 @@
-[_metadata_:author]:- "Max Koslowski"
+[_metadata_:author]:- "Maximilian Koslowski"
 [_metadata_:affiliation]:- "NTNU, Norway"
 [_metadata_:contact]:- "maximilian.koslowski at ntnu.no"
-[_metadata_:date]:- "2023-07-11 14:13:14"
+[_metadata_:date]:- "2023-07-14 23:55:28"
 
 # Rectangular choice
 This project contains code and spreadsheet files to illustrate the models shown in the research manuscript entitled "From single to joint production under rectangular technology choice" submitted for review at the journal [*Economic Systems Research*](https://www.tandfonline.com/journals/cesr20).
@@ -54,14 +54,14 @@ Specifically, this project contains:
 - the ``Manifest.toml`` and ``Project.toml`` files included for reproducibility (see below). For background see [here](https://pkgdocs.julialang.org/v1/toml-files/).
 - an empty ``settings.json`` file, created by default.
 - in ``data``, Excel files containing illustrative data that are imported into the three Jupyter notebooks.
-- in ``notebooks``, Jupyter notebooks that explore the three cases of commodity-industry (c-i) dimensions, i.e. when [c>i](./notebooks/SU-RCOT_c+i-.ipynb), [c<i](./notebooks/SU-RCOT_c-i+.ipynb), and [c=i](./notebooks/SU-RCOT_c=i.ipynb). (These Jupyter notebooks have also been included in html format for accessibility (if the reader/user has no Jupyter environment.)
+- in ``notebooks``, Jupyter notebooks that explore the three cases of commodity-industry (c-i) dimensions, i.e. when [c>i](./notebooks/SU-RCOT_c+i-.ipynb), [c<i](./notebooks/SU-RCOT_c-i+.ipynb), and [c=i](./notebooks/SU-RCOT_c=i.ipynb). (These Jupyter notebooks have also been included in html format for accessibility - if the reader/user has no Jupyter environment.)
 - in ``src``, Julia code files that are called from within the Jupyter notebooks. Specifically:
     - ``SUT_structure.jl`` organises the SUT data imported into the Jupyter notebooks.
     - ``Constructs.jl`` uses these SUT structures and converts them through reallocation of secondary products into structures based on single production.
     - ``RCOT_data.jl`` is the data structure to be used for RCOT modelling; it is based on the above structures and can be modified.
     - ``RCOT_model.jl`` a wrapper for the RCOT models that solves them.
     - ``Auxiliary.jl`` contains helper functions.
-    - ``RectangularChoice``, a legacy file from when creating the project.
+    - ``RectangularChoice.jl``, a legacy file from when creating the project.
 
 To explore the model, start with the [c>i](./notebooks/SU-RCOT_c+i-.ipynb) notebook, as this is the most detailed one. The two other notebooks are kept shorter while still highlighting basic properties of the model.
 
@@ -78,4 +78,4 @@ Note that if the SUT data in the Excel files is modified, e.g. to include more c
 ---
 
 *by* Maximilian Koslowski (with Edgar Hertwich and Richard Wood)\
-2023-07-14
+2023-07-15
