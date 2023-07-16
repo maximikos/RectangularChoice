@@ -67,7 +67,7 @@ function su_rcot(type::String, format::String, data::SUT.structure; surplus::Boo
             model_solution(model)
             show_primal_lhs(model)
         catch e
-            println("The relative primal SU-RCOT can only be applied to monetary data. Make also sure that no other error persists")
+            println("The relative primal SU-RCOT can only be applied to monetary data. Make also sure that no other error persists.")
         end
     
     elseif type == "dual" && format == "abs"

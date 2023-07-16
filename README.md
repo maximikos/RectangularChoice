@@ -1,7 +1,7 @@
 [_metadata_:author]:- "Maximilian Koslowski"
 [_metadata_:affiliation]:- "NTNU, Norway"
 [_metadata_:contact]:- "maximilian.koslowski at ntnu.no"
-[_metadata_:date]:- "2023-07-14 23:55:28"
+[_metadata_:date]:- "2023-07-16 23:55:28"
 
 # Rectangular choice
 This project contains code and spreadsheet files to illustrate the models shown in the research manuscript entitled "From single to joint production under rectangular technology choice" submitted for review at the journal [*Economic Systems Research*](https://www.tandfonline.com/journals/cesr20).
@@ -20,6 +20,8 @@ The directory tree of the project is as follows:
 
 ```bash
 RectangularChoice/
+│   .gitignore
+│   LICENSE
 │   Manifest.toml
 │   Project.toml
 │   README.md
@@ -50,6 +52,8 @@ RectangularChoice/
 ```
 
 Specifically, this project contains:
+- a ``.gitignore`` file.
+- a ``LICENSE`` file.
 - this ``README.md`` file.
 - the ``Manifest.toml`` and ``Project.toml`` files included for reproducibility (see below). For background see [here](https://pkgdocs.julialang.org/v1/toml-files/).
 - an empty ``settings.json`` file, created by default.
@@ -65,14 +69,14 @@ Specifically, this project contains:
 
 To explore the model, start with the [c>i](./notebooks/SU-RCOT_c+i-.ipynb) notebook, as this is the most detailed one. The two other notebooks are kept shorter while still highlighting basic properties of the model.
 
-Please note that the anonymised version of the repository may not display all text correctly (e.g. cutting off lines). In that case, downloading the material directly allows to view and interact with it appropriately.
+Please note that the anonymised version of the repository may not display all text correctly (e.g. cutting off lines). In that case, downloading the material directly allows to view and interact with it appropriately. As for interacting with the project, mind that the code is tailored for the purposes in our paper and may have to be adjusted for more generic IO modelling.
 
 ## Reproducibility
 While the included Jupyter notebooks in html format already show the output, one may easily reproduce this output and/ or modify the files. This can be done in various settings. At time of writing, a convenient choice is to install Julia, VS Code, and the respective Julia extension as per [here](https://www.julia-vscode.org/docs/dev/gettingstarted/); moreover, the [Jupyter extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) for VS Code must be installed. As described in ``Manifest.toml``, Julia version 1.9.0 was used in this project.
 
 Following this basic setup, make this environment locally available as described [here](https://pkgdocs.julialang.org/v1/environments/#Using-someone-else's-project). A restart of VS Code may then be required. Then, when in the project directory, select the environment and select the new Julia kernel (like [here](https://code.visualstudio.com/docs/datascience/jupyter-kernel-management), provided that the Julia kernel installation succeeded) and execute the notebook of choice.
 
-> **_NOTE:_** If the Julia kernel installation does not succeed and/or if required packages are not installed automatically, please add manually the relevant packages (listed in ``Project.toml``) as described [here](https://pkgdocs.julialang.org/v1/managing-packages/#Adding-registered-packages). If the kernel can still not be found, try to run ``IJulia.installkernel("RectangularChoice", "--project=$(Base.active_project())")`` in the active project ``RectangularChoice`` in the REPL (as described [here](https://julialang.github.io/IJulia.jl/stable/manual/usage/#Julia-projects)). 
+> **NOTE:** If the Julia kernel installation does not succeed and/or if required packages are not installed automatically, please add manually the relevant packages (listed in ``Project.toml``) as described [here](https://pkgdocs.julialang.org/v1/managing-packages/#Adding-registered-packages). If the kernel can still not be found, try to run ``IJulia.installkernel("RectangularChoice", "--project=$(Base.active_project())")`` in the active project ``RectangularChoice`` in the REPL (as described [here](https://julialang.github.io/IJulia.jl/stable/manual/usage/#Julia-projects)). 
 
 Note that if the SUT data in the Excel files is modified, e.g. to include more commodities, adjustments in the Jupyter notebooks are necessary as additional technologies are added manually *within* these notebooks. If these additional technologies are not modified accordingly, a dimension mismatch will disrupt the code execution.
 
@@ -80,4 +84,4 @@ Note that if the SUT data in the Excel files is modified, e.g. to include more c
 ---
 
 *by* Maximilian Koslowski (with Edgar Hertwich and Richard Wood)\
-2023-07-15
+2023-07-16

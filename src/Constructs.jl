@@ -63,11 +63,11 @@ ctc.L == inv(I-ctc.A)
     
             # Calculate the elements of the single-production system
             c.Z = sut.U*inv(sut.D')
-            c.A = sut.B*inv(sut.C)
+            c.A = sut.U*inv(sut.V') # alt: sut.B*inv(sut.C)
             c.L = inv(I-c.A)
-            c.G = sut.F*inv(transpose(sut.D))
+            c.G = sut.F*inv(sut.D')
             c.f = sum(c.G,dims=2)
-            c.R = sut.F*inv(transpose(sut.V))
+            c.R = sut.F*inv(sut.V')
             c.y = sut.e
             c.x = sut.q
             c.pii = sut.pii
@@ -88,7 +88,7 @@ ctc.L == inv(I-ctc.A)
             c = construct()
     
             # Calculate the elements of the single-production system
-            c.Z = sut.B*sut.V
+            c.Z = sut.B*sut.V # alt: sut.U*sut.C'
             c.A = sut.B*sut.D
             c.L = inv(I-c.A)
             c.G = sut.F*sut.C'

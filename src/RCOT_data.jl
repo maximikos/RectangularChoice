@@ -13,10 +13,10 @@ even when the former were earlier derived form the latter.
 include("RCOT_data.jl")
 
 ### setup the base data, i.e. copy it from existing SUT.structure
-io_rcot = RCOT_data.SU(sut)
+su_rcot = RCOT_data.SU(sut)
 
 ### setup the base data, i.e. copy it from existing Construct.construct
-su_rcot = RCOT_data.IO(itc)
+io_rcot = RCOT_data.IO(itc)
 
 ### the base data can later be augmented, e.g.:
 V2_alt = [0 95 0 0 0; 0 95 0 0 0; 10 60 0 0 0] # alternative technologies for industry #i.2
