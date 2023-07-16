@@ -1,5 +1,5 @@
 #=
-Solves the IO/SU RCOT model. GLPK is used as solver.
+Solves the IO/SU RCOT model. GLPK is used as solver; others may be used as well, but may require a code adjustment.
 
 <type> defines if the primal or dual should be solved explicitly.
 <format> denotes if absolute or relative RCOT formulation is to be used.
@@ -29,7 +29,7 @@ using LinearAlgebra
 
 using ..SUT # from SUT_structure.jl
 using ..Constructs # from Constructs.jl
-using ..RCOT_data # from RCOT_data.jl
+using ..Model_data # from Model_data.jl
 # and calls functions from Auxiliary.jl
 
 function su_rcot(type::String, format::String, data::SUT.structure; surplus::Bool=true)
@@ -45,7 +45,7 @@ function su_rcot(type::String, format::String, data::SUT.structure; surplus::Boo
             else
                 @constraint(model, c1, (data.V'-data.U)*(z_star) .== data.e)
             end
-            @constraint(model, c2, data.F*z_star .<= data.f)
+            @constraint(model, c2, data.F*z_star .<= data.ϕ)
             optimize!(model)
             model_solution(model)
             show_primal_lhs(model)
@@ -62,7 +62,7 @@ function su_rcot(type::String, format::String, data::SUT.structure; surplus::Boo
             else
                 @constraint(model, c1, (data.C-data.B)*(g_star) .== data.e)
             end
-            @constraint(model, c2, data.S*g_star .<= data.f)
+            @constraint(model, c2, data.S*g_star .<= data.ϕ)
             optimize!(model)
             model_solution(model)
             show_primal_lhs(model)
@@ -74,7 +74,7 @@ function su_rcot(type::String, format::String, data::SUT.structure; surplus::Boo
         try
             @variable(model, p[1:size(data.V,2)] >= 0)
             @variable(model, r[1:size(data.F,1)] >= 0)
-            @objective(model, Max, sum(p'*data.e - r'*data.f))
+            @objective(model, Max, sum(p'*data.e - r'*data.ϕ))
             @constraint(model, c1d, (data.V'-data.U)'*(p) - data.F'*r .<= data.F'*data.pii)
             optimize!(model)
             model_solution(model)
@@ -87,7 +87,7 @@ function su_rcot(type::String, format::String, data::SUT.structure; surplus::Boo
         try
             @variable(model, p[1:size(data.C,1)] >= 0)
             @variable(model, r[1:size(data.S,1)] >= 0)
-            @objective(model, Max, sum(p'*data.e - r'*data.f))
+            @objective(model, Max, sum(p'*data.e - r'*data.ϕ))
             @constraint(model, c1d, (data.C-data.B)'*(p) - data.S'*r .<= data.S'*data.pii)
             optimize!(model)
             model_solution(model)
@@ -110,7 +110,7 @@ function io_rcot(type::String, format::String, data::Constructs.construct)
             @variable(model, s_star[1:size(data.Z,2)] >= 0, base_name = "s*")
             @objective(model, Min, sum(data.pii'*data.G*s_star))
             @constraint(model, c1, (data.xhat-data.Z)*(s_star) .>= data.y)
-            @constraint(model, c2, data.G*s_star .<= data.f)
+            @constraint(model, c2, data.G*s_star .<= data.ϕ)
             optimize!(model)
             model_solution(model)
             show_primal_lhs(model)
@@ -119,7 +119,7 @@ function io_rcot(type::String, format::String, data::Constructs.construct)
             @variable(model, x_star[1:size(data.A,2)] >= 0, base_name = "x*")
             @objective(model, Min, sum(data.pii'*data.R*x_star))
             @constraint(model, c1, (data.I_mod-data.A)*(x_star) .>= data.y)
-            @constraint(model, c2, data.R*x_star .<= data.f)
+            @constraint(model, c2, data.R*x_star .<= data.ϕ)
             optimize!(model)
             model_solution(model)
             show_primal_lhs(model)
@@ -127,7 +127,7 @@ function io_rcot(type::String, format::String, data::Constructs.construct)
         elseif type == "dual" && format == "abs"
             @variable(model, p[1:size(data.Z,2)] >= 0)
             @variable(model, r[1:size(data.G,1)] >= 0)
-            @objective(model, Max, sum(p'*data.y - r'*data.f))
+            @objective(model, Max, sum(p'*data.y - r'*data.ϕ))
             @constraint(model, c1d, (data.xhat-data.Z)'*(p) - data.G'*r .<= data.G'*data.pii)
             optimize!(model)
             model_solution(model)
@@ -136,7 +136,7 @@ function io_rcot(type::String, format::String, data::Constructs.construct)
         elseif type == "dual" && format == "rel"
             @variable(model, p[1:size(data.A,2)] >= 0)
             @variable(model, r[1:size(data.R,1)] >= 0)
-            @objective(model, Max, sum(p'*data.y - r'*data.f))
+            @objective(model, Max, sum(p'*data.y - r'*data.ϕ))
             @constraint(model, c1d, (data.I_mod-data.A)'*(p) - data.R'*r .<= data.R'*data.pii)
             optimize!(model)
             model_solution(model)

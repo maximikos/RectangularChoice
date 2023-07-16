@@ -1,8 +1,6 @@
 module SUT
 #=
-A structure for the elements of a supply-use table (SUT).
-Additional (intensity) elements are calculated based on absolute SUT data.
-Changing individual elements after original setup will not recalculate dependent variables.
+A structure for the elements of a supply-use table (SUT). Additional (intensity) elements are calculated based on absolute SUT data. Changing individual elements after original setup will not recalculate dependent variables.
 
 ---
 
@@ -35,6 +33,7 @@ sum(bar.U,dims=2) + bar.e
         g::Union{Matrix{Float64},Nothing} # Total industry output
         q::Matrix{Float64} # Total commodity output
         f::Matrix{Float64} # Total factor requirements
+        ϕ::Union{Matrix{Float64},Nothing} # Factor limits (endowments)
         B::Union{Matrix{Float64},Nothing} # Use coefficients
         C::Union{Matrix{Float64},Nothing} # 
         D::Matrix{Float64} # Industry share
@@ -42,7 +41,7 @@ sum(bar.U,dims=2) + bar.e
         t::Union{String,Nothing} # Unit of commodity-related SUT elements
         isActive
 
-        function structure(U, V, F, e, pii; t)
+        function structure(U, V, F, e, pii, t; ϕ=nothing)
             if size(V) != size(U')
                 @error "The make and use matrices have different dimensions."
             elseif size(V,1) != size(F,2)
@@ -61,6 +60,7 @@ sum(bar.U,dims=2) + bar.e
                 this.pii = pii
                 this.q = sum(V',dims=2)
                 this.f = sum(F,dims=2)
+                isnothing(ϕ) && (this.ϕ = this.f)
                 this.D = V*inv(diagm(vec(this.q)))
                 
                 # Calculate the following only when data is given in monetary units
@@ -74,6 +74,10 @@ sum(bar.U,dims=2) + bar.e
                         @warn("The SUT-system is not balanced.")
                     end
                 else
+                    this.g = nothing
+                    this.B = nothing
+                    this.C = nothing
+                    this.S = nothing
                     @info "The SUT system is not given in monetary units such that no total industry output and dependent matrices may be calculated."
                     sum(this.V',dims=2) == sum(this.U,dims=2) + this.e || @warn("The SUT-system is not balanced.")
                 end

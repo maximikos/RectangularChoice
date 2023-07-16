@@ -1,5 +1,10 @@
+#=
+This file contains a range of helper functions called in the other .jl files as well as in the .ipynb notebooks.
+=#
+
+
 function model_solution(model)
-# Returns solution parameters after optimisation
+# Returns solution parameters after optimisation. <model> must be a JuMP model.
     @show termination_status(model)
     @show primal_status(model)
     @show dual_status(model)
@@ -8,8 +13,10 @@ function model_solution(model)
 end
 
 function show_dual_lhs(dual)
-# Show the LHS values of a solved primal
+# Show the LHS values of a solved dual. <model> must be a JuMP model.
+    # Variable solution
     var_con = all_constraints(dual, VariableRef, MOI.GreaterThan{Float64})
+    # Solved no-profit constraint
     profit_con = all_constraints(dual, AffExpr, MOI.LessThan{Float64})
 
     p_len = length(dual[:p])
@@ -24,10 +31,14 @@ function show_dual_lhs(dual)
 end
 
 function show_primal_lhs(primal)
-# Show the LHS values of a solved primal
+# Show the LHS values of a solved primal. <primal> must be a JuMP model.
+    # Variable solution
     var_con = all_constraints(primal, VariableRef, MOI.GreaterThan{Float64})
+    # Solved supply-demand constraint (if inequality)
     demand_con = all_constraints(primal, AffExpr, MOI.GreaterThan{Float64})
+    # Solved suppy-demand constraint (if equality)
     demand_con_nosurp = all_constraints(primal, AffExpr, MOI.EqualTo{Float64})
+    # Solved factor constraint
     factor_con = all_constraints(primal, AffExpr, MOI.LessThan{Float64})
 
     @show value.(var_con)
@@ -37,15 +48,17 @@ function show_primal_lhs(primal)
 
 end
 
-function sensitivities(model_name; type::String)
+function sensitivities(model; type::String)
     #=
+    A sensitivity analysis for the optimisation model <model>.
+    
     This function is based on the documentation at:
     https://jump.dev/JuMP.jl/stable/tutorials/linear/lp_sensitivity/#Sensitivity-analysis-of-a-linear-program
     
     Use e.g. as:
     sensitivities(primal,type="constraint")
     =#
-    report = lp_sensitivity_report(model_name)
+    report = lp_sensitivity_report(model)
     if type == "constraint"
         return (
             DataFrames.DataFrame(
@@ -56,8 +69,8 @@ function sensitivities(model_name; type::String)
                 shadow_price = shadow_price(c),
                 allowed_decrease = report[c][1],
                 allowed_increase = report[c][2])
-                for (F, S) in list_of_constraint_types(model_name) for
-                    c in all_constraints(model_name, F, S) if F == AffExpr
+                for (F, S) in list_of_constraint_types(model) for
+                    c in all_constraints(model, F, S) if F == AffExpr
             )
         )
     elseif type == "variable"
@@ -68,10 +81,10 @@ function sensitivities(model_name; type::String)
                 value = value(v),
                 upper_bound = has_upper_bound(v) ? upper_bound(v) : Inf,
                 reduced_cost = reduced_cost(v),
-                obj_coefficient = coefficient(objective_function(model_name), v),
+                obj_coefficient = coefficient(objective_function(model), v),
                 allowed_decrease = report[v][1],
                 allowed_increase = report[v][2])
-                for v in all_variables(model_name)
+                for v in all_variables(model)
             )
         )
     end     
@@ -84,7 +97,7 @@ function allequal_multi(su_io, tuple_list::Vararg{Tuple})
 
     allequal_multi(sut, ("V", "U"), ("F", "S"))
     ... checks if V and U as well  as F and S have the same dimensions
-    ... returns "false" because the make and use matrices have different dimensions.
+    ... returns "false" because V and U have different dimensions.
 
     allequal_multi(sut, ("V'", "U"), ("F", "S"))
     ... returns, however, "true".
@@ -107,9 +120,11 @@ function allequal_multi(su_io, tuple_list::Vararg{Tuple})
             if contains.(tup[j],"'")
                 tup_strip = replace(tup[j], "'" => "")
                 dict_value = su_io_dict[tup_strip]
+                (isnothing(dict_value)) && (dict_value = 0)
                 size_element = size(dict_value')
             else
                 dict_value = su_io_dict[tup[j]]
+                (isnothing(dict_value)) && (dict_value = 0)
                 size_element = size(dict_value)
             end
             push!(tup_list, [size_element])

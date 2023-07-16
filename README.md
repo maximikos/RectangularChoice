@@ -1,14 +1,14 @@
 [_metadata_:author]:- "Maximilian Koslowski"
 [_metadata_:affiliation]:- "NTNU, Norway"
 [_metadata_:contact]:- "maximilian.koslowski at ntnu.no"
-[_metadata_:date]:- "2023-07-16 23:55:28"
+[_metadata_:date]:- "2023-07-16 19:27:51"
 
 # Rectangular choice
 This project contains code and spreadsheet files to illustrate the models shown in the research manuscript entitled "From single to joint production under rectangular technology choice" submitted for review at the journal [*Economic Systems Research*](https://www.tandfonline.com/journals/cesr20).
 
 In that article, we start from the rectangular-choice-of-technology (RCOT) model described by [Duchin & Levine (2011)](https://doi.org/10.1080/09535314.2011.571238), a linear programming model used for scenario analysis within the field of input-output (IO) analysis. That model is based on square IO tables, some elements of which can then be augmented along their column dimension to allow for the choice among multiple alternative technologies to produce a homogeneous output.
 
-We have identified potential caveats concerning the units and shape of the underlying data as well as the method of reallocating secondary products when converting supply-use tables (SUTs) into IO tables. Based on these insights, we argue to opt for a model generalisation, SU-RCOT, that is not (or only to a limited degree) subject to the described limitations of the original IO-RCOT model. Essentially, we move thus from a model artifically based on pseudo-single production to a model that covers joint production.
+We have identified potential caveats concerning the units and shape of the underlying data as well as the method of reallocating secondary products when converting supply-use tables (SUTs) into IO tables. Based on these insights, we argue to opt for a model generalisation, SU-RCOT, that is not (or only to a limited degree) subject to the described limitations of the original IO-RCOT model and the like. Essentially, we move thus from a model artifically based on pseudo-single production to a model that covers joint production.
 
 While most of the arguments made in the manuscript are comprehensible by simply examining the formulas in the main text and PDF appendix, we want to illustrate the use of the generalised RCOT model here.
 
@@ -35,17 +35,19 @@ RectangularChoice/
 │       SUT_c=i.xlsx
 │
 ├───notebooks
-│       SU-RCOT_c+i-.ipynb
-│       SU_RCOT_c+i-.html
-│       SU-RCOT_c-i+.ipynb
-│       SU_RCOT_c-i+.html
-│       SU-RCOT_c=i.ipynb
-│       SU_RCOT_c=i.html
-│
+│   │   SU-RCOT_c+i-.html
+│   │   SU-RCOT_c+i-.ipynb
+│   │   SU-RCOT_c-i+.html
+│   │   SU-RCOT_c-i+.ipynb
+│   │   SU-RCOT_c=i.html
+│   │   SU-RCOT_c=i.ipynb
+│   │
+│   └───.ipynb_checkpoints
 └───src
         Auxiliary.jl
         Constructs.jl
-        RCOT_data.jl
+        Leontief.jl
+        Model_data.jl
         RCOT_model.jl
         RectangularChoice.jl
         SUT_structure.jl
@@ -62,7 +64,8 @@ Specifically, this project contains:
 - in ``src``, Julia code files that are called from within the Jupyter notebooks. Specifically:
     - ``SUT_structure.jl`` organises the SUT data imported into the Jupyter notebooks.
     - ``Constructs.jl`` uses these SUT structures and converts them through reallocation of secondary products into structures based on single production.
-    - ``RCOT_data.jl`` is the data structure to be used for RCOT modelling; it is based on the above structures and can be modified.
+    - ``Model_data.jl`` is the data structure to be used for RCOT and inversion-based modelling; it is based on the above structures and can be modified.
+    - ``Leontief.jl`` runs Leontief-style impact and imputation analyses.
     - ``RCOT_model.jl`` a wrapper for the RCOT models that solves them.
     - ``Auxiliary.jl`` contains helper functions.
     - ``RectangularChoice.jl``, a legacy file from when creating the project.

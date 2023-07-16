@@ -1,7 +1,6 @@
 module Constructs
 #=
-A structure for a pseudo single production system based on SUT data.
-The former is derived from the latter through application of a to-be-defined construct.
+A structure for a pseudo single production system based on SUT data. The former is derived from the latter through application of a to-be-defined construct.
 
 ---
 
@@ -37,8 +36,9 @@ ctc.L == inv(I-ctc.A)
         G::Matrix{Float64} # Factor use
         R::Matrix{Float64} # Factor intensity matrix
         f::Matrix{Float64} # Total factor use
+        ϕ::Matrix{Float64} # Factor limits
         pii::Matrix{Float64} # Factor prices
-        I_mod::Union{UniformScaling{Bool},Matrix{Float64}} # Augmented identity matrix - not used here
+        I_mod::Union{UniformScaling{Bool},Matrix} # Augmented identity matrix - not used here
         xhat::Matrix{Float64} # Augmented output matrix - not used here
         isActive
     
@@ -67,6 +67,7 @@ ctc.L == inv(I-ctc.A)
             c.L = inv(I-c.A)
             c.G = sut.F*inv(sut.D')
             c.f = sum(c.G,dims=2)
+            c.ϕ = sut.ϕ
             c.R = sut.F*inv(sut.V')
             c.y = sut.e
             c.x = sut.q
@@ -92,7 +93,8 @@ ctc.L == inv(I-ctc.A)
             c.A = sut.B*sut.D
             c.L = inv(I-c.A)
             c.G = sut.F*sut.C'
-            c.f = sum(c.G,dims=2)            
+            c.f = sum(c.G,dims=2)  
+            c.ϕ = sut.ϕ          
             c.R = sut.S*sut.D
             c.y = sut.e
             c.x = sut.q
@@ -121,6 +123,7 @@ ctc.L == inv(I-ctc.A)
             c.L = inv(I-c.A)
             c.G = sut.F
             c.f = sum(c.G,dims=2)
+            c.ϕ = sut.ϕ
             c.R = sut.S
             c.y = inv(sut.C)*sut.e
             c.x = sut.g
@@ -147,6 +150,7 @@ ctc.L == inv(I-ctc.A)
             c.L = inv(I-c.A)
             c.G = sut.F
             c.f = sum(c.G,dims=2)
+            c.ϕ = sut.ϕ
             c.R = sut.S
             c.y = sut.D*sut.e
             c.x = sut.g
