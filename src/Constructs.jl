@@ -1,26 +1,23 @@
-module Constructs
-#=
-A structure for a pseudo single production system based on SUT data. The former is derived from the latter through application of a to-be-defined construct.
+"""
+A structure for a pseudo single production system based on SUT data. The former is derived from the latter through application of a to-be-defined construct. One can choose between four constructs (CTC, ITC, FISC, FPSC). A "construct-object" is exported.
 
 ---
 
-# usage as for example:
+### usage as for example:
 
 include("Constructs.jl")
 
-### to get the final demand
+# to get the final demand
 itc = Constructs.ITC(<sut::SUT.structure>)
 itc.y
 
-# or
-
-### to check if the stored Leontief inverse matches the calculated one
+# or to check if the stored Leontief inverse matches the calculated one
 ctc = Constructs.CTC(<sut::SUT.structure>)
 ctc.L == inv(I-ctc.A)
-=#
+"""
+module Constructs
 
     using LinearAlgebra
-
     using ..SUT # from SUT_structure.jl
 
     export construct
@@ -48,11 +45,12 @@ ctc.L == inv(I-ctc.A)
         end
     end
 
+    """
+    Commodity technology construct (CTC):
+    Creates a struct whose components are defined according to the CTC.
+    """
     function CTC(sut::SUT.structure)
-        #=
-        Commodity technology construct (CTC):
-        Creates a struct whose components are defined according to the CTC.
-        =#
+        
         m,n = size(sut.V)
         
         if m != n
@@ -76,12 +74,12 @@ ctc.L == inv(I-ctc.A)
         end
     end
 
-    function ITC(sut::SUT.structure)
-    #=
+    """
     Industry technology construct (ITC):
     Creates a struct whose components are defined according to the ITC.
-    =#
-        
+    """
+    function ITC(sut::SUT.structure)
+
         if sut.t == :"physical"
             @error "The ITC is not applicable to physical SUT-systems."
         else
@@ -103,11 +101,11 @@ ctc.L == inv(I-ctc.A)
         end
     end
 
-    function FISC(sut::SUT.structure)
-    #=
+    """
     Fixed industry sales construct (FISC):
     Creates a struct whose components are defined according to the FISC.
-    =#
+    """
+    function FISC(sut::SUT.structure)
     
         m,n = size(sut.V)
         
@@ -132,11 +130,11 @@ ctc.L == inv(I-ctc.A)
         end
     end
 
-    function FPSC(sut::SUT.structure)
-    #=
+    """
     Fixed product sales construct (FPSC):
     Creates a struct whose components are defined according to the FPSC.
-    =#
+    """
+    function FPSC(sut::SUT.structure)
 
         if sut.t == :"physical"
             @error "The FPSC is not applicable to physical SUT-systems."

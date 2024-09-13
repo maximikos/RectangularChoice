@@ -1,37 +1,39 @@
-#=
-Solves the IO/SU RCOT model. GLPK is used as solver; others may be used as well, but may require a code adjustment.
-
-<type> defines if the primal or dual should be solved explicitly.
-<format> denotes if absolute or relative RCOT formulation is to be used.
-<data> denotes the data to be used; either the SUT or from a construct.
-<surplus> defines for SU-RCOT if a commodity surplus may exist or not; only to be used in primal.
-
----
-
-# usage as for example:
-
-include("RCOT_model.jl")
-
-### run the primal IO-RCOT model in its absolute form using the data contained in <io_rcot_data>
-io_rcot_model = io_rcot("primal", "abs", io_rcot_data)
-
-### show the mathematical model
-latex_formulation(io_rcot_model)
-
-### show a solution summary of the solved model
-solution_summary(io_rcot_model)
-
-...
-
-=#
-
 using LinearAlgebra
-
 using ..SUT # from SUT_structure.jl
 using ..Constructs # from Constructs.jl
 using ..Model_data # from Model_data.jl
 # and calls functions from Auxiliary.jl
 
+"""
+    su_rcot(type::String, format::String, data::SUT.structure; surplus::Bool=true)
+
+Solves the J-RCOT model.
+
+### Input
+
+- `type` -- defines if the primal or dual should be solved explicitly.
+- `format` -- denotes if absolute or relative J-RCOT formulation is to be used.
+- `data` -- denotes the data to be used.
+- `surplus` -- defines if a commodity surplus may exist or not; only to be used in primal.
+
+### Output
+
+Returns the JuMP model and shows the output of the two/three Auxiliary.jl functions "model_solution" and "show_primal_lhs"/"show_dual_lhs".
+
+### Notes
+
+GLPK is used as solver; others (like HiGHS) may be used as well, but may require a code adjustment.
+
+### Example
+
+include("RCOT_model.jl")
+
+# run the primal J-RCOT model in its absolute form using the data contained in <su_rcot_data>
+su_rcot_model = su_rcot("primal", "abs", su_rcot_data)
+
+# show the mathematical model
+latex_formulation(su_rcot_model)
+"""
 function su_rcot(type::String, format::String, data::SUT.structure; surplus::Bool=true)
     # Define the optimisation model
     model = Model(GLPK.Optimizer)
@@ -100,7 +102,35 @@ function su_rcot(type::String, format::String, data::SUT.structure; surplus::Boo
     return model
 end
 
+"""
+    io_rcot(type::String, format::String, data::SUT.structure)
 
+Solves the J-RCOT model.
+
+### Input
+
+- `type` -- defines if the primal or dual should be solved explicitly.
+- `format` -- denotes if absolute or relative S-RCOT formulation is to be used.
+- `data` -- denotes the data to be used; that data is the IOT data resulting from applying a construct to the original SUT data.
+
+### Output
+
+Returns the JuMP model and shows the output of the two/three Auxiliary.jl functions "model_solution" and "show_primal_lhs"/"show_dual_lhs".
+
+### Notes
+
+GLPK is used as solver; others (like HiGHS) may be used as well, but may require a code adjustment.
+
+### Example
+
+include("RCOT_model.jl")
+
+# run the primal S-RCOT model in its absolute form using the data contained in <io_rcot_data>
+io_rcot_model = io_rcot("primal", "abs", io_rcot_data)
+
+### show a solution summary of the solved model
+solution_summary(io_rcot_model)
+"""
 function io_rcot(type::String, format::String, data::Constructs.construct)
     # Define the optimisation model
     model = Model(GLPK.Optimizer)

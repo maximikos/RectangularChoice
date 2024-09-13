@@ -1,33 +1,13 @@
-module Leontief
-#=
-Runs an impact or imputation analysis based on the Leontief-calculus, either as a price or quantity model. Mind that here potentially more production factors are considered than is typical in IO. That is, any production factor with a non-zero factor price is considered as integral part of the IOT, not just as a satellite matrix.
+"""
+A module for running an impact or imputation analysis based on the Leontief-calculus, either as a price or quantity model. Mind that here potentially more production factors are considered than is typical in IO. That is, any production factor with a non-zero factor price is considered as integral part of the IOT, not just as a satellite matrix.
 
 Depending on if the underlying data was modified, either an impact or imputation analysis is performed.
----
 
-# usage as for example:
-
-include("Leontief.jl")
-
-### to calculate the total output using the CTC via the Leontief calculus in coefficient form (starting off from given SUT data <sut>)
-
-ctc = Constructs.CTC(sut)
-io_model_data = Model_data.IO(ctc)
-leo_ctc_rel = Leontief.quantity(io_model_data, "rel")
-leo_ctc_rel.output
-
-# or
-
-### to calculate the commodity prices (values) disaggregated by sector using the SUT data in absolute form (starting off from SUT data <sut>)
-
-su_model_data = Model_data.SU(sut)
-leo_sut_abs = Leontief.price(su_model_data, "abs")
-leo_sut_abs.com_price_disagg_by_sectors
-
-=#
+The function leontief() initialises the Leontief models. The actual Leontief quantity and price models are realised as separate functions below. The "leontief-object" is then exported.
+"""
+module Leontief
 
     using LinearAlgebra
-
     using ..SUT # from SUT_structure.jl
     using ..Constructs # from Constructs.jl    
     using ..Model_data # from Model_data.jl
@@ -61,11 +41,30 @@ leo_sut_abs.com_price_disagg_by_sectors
         end
     end
 
-    function quantity(sut::SUT.structure, format::String)
-        #=
-        Calculates the unconstrained quantity model in absolute or relative <format> using <sut> data
-        =#
+    """
+        quantity(sut::SUT.structure, format::String)
 
+    Solves the unconstrained Leontief quantity model in absolute or relative <format> using <sut> data.
+
+    ### Input
+
+    - `sut` -- the SUT data to be used.
+    - `format` -- denotes if absolute ("abs") or relative ("rel") formulation is to be used.
+
+    ### Output
+
+    Returns the Leontief quantity model object with its respective variables: net-output ("net_out"), its inverse ("net_out_inv"), total output ("output"), and factor use ("factor_use"). The latter two are also provided in disaggregated form.
+
+    ### Example
+    include("Leontief.jl")
+
+    # to calculate the total output using the SUT data <sut> via the Leontief calculus in coefficient form.
+
+    su_model_data = Model_data.SU(sut)
+    leo_su_rel = Leontief.quantity(su_model_data, "rel")
+    leo_su_rel.output
+    """
+    function quantity(sut::SUT.structure, format::String)
         if allequal_multi(sut, ("V'", "U"), ("C", "B")) == false
             @error "The SUT-system is rectangular and cannot be inverted!"
         elseif format == "abs"
@@ -112,6 +111,29 @@ leo_sut_abs.com_price_disagg_by_sectors
         end
     end
 
+    """
+        price(sut::SUT.structure, format::String)
+
+    Solves the unconstrained Leontief price model in absolute or relative <format> using <sut> data.
+
+    ### Input
+
+    - `sut` -- the SUT data to be used.
+    - `format` -- denotes if absolute ("abs") or relative ("rel") formulation is to be used.
+
+    ### Output
+
+    Returns the Leontief price model object with its respective variables: net-output ("net_out"), priced factors ("priced_factors"), and commodity prices ("com_price"). The latter variable is also provided in disaggregated form.
+
+    ### Example
+    include("Leontief.jl")
+
+    # to calculate the commodity prices (values) disaggregated by sector using the SUT data in absolute form (starting off from SUT data <sut>)
+
+    su_model_data = Model_data.SU(sut)
+    leo_sut_abs = Leontief.price(su_model_data, "abs")
+    leo_sut_abs.com_price_disagg_by_sectors
+    """
     function price(sut::SUT.structure, format::String)
         #=
         Calculates the unconstrained price model in absolute or relative <format> using <sut> data
@@ -155,6 +177,30 @@ leo_sut_abs.com_price_disagg_by_sectors
         end
     end
 
+    """
+        quantity(con::Constructs.construct, format::String)
+
+    Solves the unconstrained Leontief quantity model in absolute or relative <format> using <con> data (i.e. an IOT derived from an SUT via constructs).
+
+    ### Input
+
+    - `con` -- the IOT data to be used.
+    - `format` -- denotes if absolute ("abs") or relative ("rel") formulation is to be used.
+
+    ### Output
+
+    Returns the Leontief quantity model object with its respective variables: net-output ("net_out"), its inverse ("net_out_inv"), total output ("output"), and factor use ("factor_use"). The latter two are also provided in disaggregated form.
+
+    ### Example
+    include("Leontief.jl")
+
+    # to calculate the total output using the CTC via the Leontief calculus in coefficient form (starting off from given SUT data <sut>).
+
+    ctc = Constructs.CTC(sut)
+    io_model_data = Model_data.IO(ctc)
+    leo_ctc_rel = Leontief.quantity(io_model_data, "rel")
+    leo_ctc_rel.output
+    """
     function quantity(con::Constructs.construct, format::String)
         #=
         Calculates the unconstrained quantity model in absolute or relative <format> using <construct> data
@@ -197,6 +243,29 @@ leo_sut_abs.com_price_disagg_by_sectors
         end
     end
 
+    """
+        price(con::Constructs.construct, format::String)
+
+    Solves the unconstrained Leontief price model in absolute or relative <format> using <con> data (i.e. an IOT derived from an SUT via constructs).
+
+    ### Input
+
+    - `con` -- the IOT data to be used.
+    - `format` -- denotes if absolute ("abs") or relative ("rel") formulation is to be used.
+
+    ### Output
+
+    Returns the Leontief price model object with its respective variables: net-output ("net_out"), priced factors ("priced_factors"), and commodity prices ("com_price"). The latter variable is also provided in disaggregated form.
+
+    ### Example
+    include("Leontief.jl")
+
+    # to calculate the commodity prices (values) disaggregated by sector using the CTC-based IOT data in absolute form (starting off from CTC data <ctc>)
+
+    ctc_model_data = Model_data.IO(ctc)
+    leo_ctc_abs = Leontief.price(ctc_model_data, "abs")
+    leo_ctc_abs.com_price_disagg_by_sectors
+    """
     function price(con::Constructs.construct, format::String)
         #=
         Calculates the unconstrained quantity model in absolute or relative <format> using <construct> data
