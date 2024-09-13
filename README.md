@@ -1,14 +1,14 @@
 [_metadata_:author]:- "Maximilian Koslowski"
 [_metadata_:affiliation]:- "NTNU, Norway"
 [_metadata_:contact]:- "maximilian.koslowski at ntnu.no"
-[_metadata_:date]:- "2023-07-16 19:27:51"
+[_metadata_:date]:- "2024-09-13 20:21:51"
 
 # Rectangular choice
 This project contains code and spreadsheet files to illustrate the models shown in the research manuscript entitled "From single to joint production under rectangular technology choice" submitted for review at the journal [*Economic Systems Research*](https://www.tandfonline.com/journals/cesr20).
 
 In that article, we start from the rectangular-choice-of-technology (RCOT) model described by [Duchin & Levine (2011)](https://doi.org/10.1080/09535314.2011.571238), a linear programming model used for scenario analysis within the field of input-output (IO) analysis. That model is based on square IO tables, some elements of which can then be augmented along their column dimension to allow for the choice among multiple alternative technologies to produce a homogeneous output.
 
-We have identified potential caveats concerning the units and shape of the underlying data as well as the method of reallocating secondary products when converting supply-use tables (SUTs) into IO tables. Based on these insights, we argue to opt for a model generalisation, SU-RCOT, that is not (or only to a limited degree) subject to the described limitations of the original IO-RCOT model and the like. Essentially, we move thus from a model artifically based on pseudo-single production to a model that covers joint production.
+We have identified potential caveats concerning the units and shape of the underlying data as well as the method of reallocating secondary products when converting supply-use tables (SUTs) into IO tables. Based on these insights, we argue to opt for a model generalisation, J-RCOT, that is not (or only to a limited degree) subject to the described limitations of the original S-RCOT model and the like. Essentially, we move thus from a model artifically based on pseudo-single production to a model that covers joint production.
 
 While most of the arguments made in the manuscript are comprehensible by simply examining the formulas in the main text and PDF appendix, we want to illustrate the use of the generalised RCOT model here.
 
@@ -87,4 +87,4 @@ Note that if the SUT data in the Excel files is modified, e.g. to include more c
 ---
 
 *by* Maximilian Koslowski (with Edgar Hertwich and Richard Wood)\
-2023-07-16
+2024-09-13

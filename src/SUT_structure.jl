@@ -1,10 +1,25 @@
-module SUT
-#=
-A structure for the elements of a supply-use table (SUT). Additional (intensity) elements are calculated based on absolute SUT data. Changing individual elements after original setup will not recalculate dependent variables.
+"""
+A module as the structure for the elements of a supply-use table (SUT). Additional (intensity) elements are calculated based on absolute SUT data. Changing individual elements after original setup will not recalculate dependent variables.
+
+The module contains the following function:
+
+    structure(U, V, F, e, pii, t; ϕ=nothing)
+
+Returns solution parameters of an RCOT model after optimisation.
+
+### Input
+
+- `U`, `V`, `F`, `e`, `pii` -- matrices and vectors of a SUT.
+- `t` -- defaults to nothing; if =="monetary", all row and column sum balances are checked, otherwise only those that are applicable.
+- `ϕ` -- factor limits; if not provided, the total usage of a factor is taken as the factor limit.
+
+### Output
+
+An "object" containing the input variables as well as variables derived via calculations.
 
 ---
 
-# usage as for example:
+# EXAMPLE:
 
 include("SUT_structure.jl")
 
@@ -17,10 +32,10 @@ foo.V
 ### to sum up the use matrix and commodity final demand
 bar = <SUT.>structure(U,V,F,e,pii;t="physical")
 sum(bar.U,dims=2) + bar.e
-=#
+"""
+module SUT
 
     using LinearAlgebra
-
     export structure
 
     mutable struct structure

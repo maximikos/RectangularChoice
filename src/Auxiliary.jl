@@ -2,9 +2,24 @@
 This file contains a range of helper functions called in the other .jl files as well as in the .ipynb notebooks.
 =#
 
+"""
+    model_solution(model::JuMP.Model)
 
+Returns solution parameters of an RCOT model after optimisation.
+
+### Input
+
+- model -- a JuMP model.
+
+### Output
+
+The TerminationStatusCode object, the ResultStatusCode of primal and dual, as well as the objective value of the optimisation model.
+
+### Notes
+
+This function is used to call the output of multiple JuMP-native functions to describe the output of an optimisation model.
+"""
 function model_solution(model)
-# Returns solution parameters after optimisation. <model> must be a JuMP model.
     @show termination_status(model)
     @show primal_status(model)
     @show dual_status(model)
@@ -12,8 +27,24 @@ function model_solution(model)
 
 end
 
+"""
+    show_dual_lhs(dual::JuMP.Model)
+
+Returns the left-hand side values of a solved RCOT dual.
+
+### Input
+
+- `dual` -- a JuMP model.
+
+### Output
+
+The commodity prices, scarcity rents, and the left-hand side values of the no-profit condition.
+
+### Notes
+
+The input needs to be the RCOT dual, not the primal.
+"""
 function show_dual_lhs(dual)
-# Show the LHS values of a solved dual. <model> must be a JuMP model.
     # Variable solution
     var_con = all_constraints(dual, VariableRef, MOI.GreaterThan{Float64})
     # Solved no-profit constraint
@@ -30,8 +61,24 @@ function show_dual_lhs(dual)
 
 end
 
+"""
+    show_primal_lhs(primal::JuMP.Model)
+
+Returns the left-hand side values of a solved RCOT primal.
+
+### Input
+
+- `primal` -- a JuMP model.
+
+### Output
+
+The left-hand side values of the market balance and factor cosntraints.
+
+### Notes
+
+The input needs to be the RCOT primal, not the dual.
+"""
 function show_primal_lhs(primal)
-# Show the LHS values of a solved primal. <primal> must be a JuMP model.
     # Variable solution
     var_con = all_constraints(primal, VariableRef, MOI.GreaterThan{Float64})
     # Solved supply-demand constraint (if inequality)
@@ -48,16 +95,26 @@ function show_primal_lhs(primal)
 
 end
 
+"""
+    sensitivities(model::JuMP.Model; type::String)
+
+Returns the sensitivity analysis of the constraints or variables of a solved RCOT model.
+
+### Input
+
+- `model` -- a JuMP model; either primal or dual.
+- `type` -- either `constraint` or `variable`.
+
+### Output
+
+A dataframe detailing the sensitivities of the optimisation model in terms of its constraints or variables.
+
+### Notes
+
+This function is based on the documentation at:
+https://jump.dev/JuMP.jl/stable/tutorials/linear/lp_sensitivity/#Sensitivity-analysis-of-a-linear-program
+"""
 function sensitivities(model; type::String)
-    #=
-    A sensitivity analysis for the optimisation model <model>.
-    
-    This function is based on the documentation at:
-    https://jump.dev/JuMP.jl/stable/tutorials/linear/lp_sensitivity/#Sensitivity-analysis-of-a-linear-program
-    
-    Use e.g. as:
-    sensitivities(primal,type="constraint")
-    =#
     report = lp_sensitivity_report(model)
     if type == "constraint"
         return (
@@ -90,10 +147,24 @@ function sensitivities(model; type::String)
     end     
 end
 
-function allequal_multi(su_io, tuple_list::Vararg{Tuple})
-    #=
-    Checks the sizes of the tuple elements provided.
-    For example:
+"""
+    allequal_multi(su_io; tuple_list::Vararg{Tuple})
+
+Checks the sizes of the tuple elements provided. This is to check if the given matrices can be used to arrive at an inversion-based model.
+
+### Input
+
+- `su_io` -- a data structure containing various SUT or IOT matrices (::SUT.structure or ::Cosntructs.construct).
+- `tuple_list` -- a list of tuples of strings where the strings are the names of chosen SUT matrices, e.g. ("V'", "U").
+
+### Output
+
+True or False.
+
+### Notes
+
+Checks the sizes of the tuple elements provided.
+For example:
 
     allequal_multi(sut, ("V", "U"), ("F", "S"))
     ... checks if V and U as well  as F and S have the same dimensions
@@ -101,9 +172,8 @@ function allequal_multi(su_io, tuple_list::Vararg{Tuple})
 
     allequal_multi(sut, ("V'", "U"), ("F", "S"))
     ... returns, however, "true".
-
-    =#
-
+"""
+function allequal_multi(su_io, tuple_list::Vararg{Tuple})
     su_io_names = propertynames(su_io)
     name_len = length(su_io_names[1:end-1])
     su_io_dict = Dict(String(su_io_names[k]) => getfield(su_io, su_io_names[k]) for k =1:name_len)
