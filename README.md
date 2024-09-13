@@ -1,7 +1,7 @@
 [_metadata_:author]:- "Maximilian Koslowski"
 [_metadata_:affiliation]:- "NTNU, Norway"
 [_metadata_:contact]:- "maximilian.koslowski at ntnu.no"
-[_metadata_:date]:- "2023-07-16 19:27:51"
+[_metadata_:date]:- "2024-09-13 20:21:51"
 
 # Rectangular choice
 This project contains code and spreadsheet files to illustrate the models shown in the research manuscript entitled "From single to joint production under rectangular technology choice" submitted for review at the journal [*Economic Systems Research*](https://www.tandfonline.com/journals/cesr20).
@@ -87,4 +87,4 @@ Note that if the SUT data in the Excel files is modified, e.g. to include more c
 ---
 
 *by* Maximilian Koslowski (with Edgar Hertwich and Richard Wood)\
-2023-07-16
+2024-09-13
