@@ -1,10 +1,10 @@
 [_metadata_:author]:- "Maximilian Koslowski"
 [_metadata_:affiliation]:- "NTNU, Norway"
 [_metadata_:contact]:- "maximilian.koslowski at ntnu.no"
-[_metadata_:date]:- "2024-09-13 20:21:51"
+[_metadata_:date]:- "2024-12-20 13:33:51"
 
 # Rectangular choice
-This project contains code and spreadsheet files to illustrate the models shown in the research manuscript entitled "From single to joint production under rectangular technology choice" submitted for review at the journal [*Economic Systems Research*](https://www.tandfonline.com/journals/cesr20).
+This project contains code and spreadsheet files to illustrate the models shown in the research paper entitled "[From single to joint production under rectangular technology choice](https://doi.org/10.1080/09535314.2024.2445717)" published in the journal [*Economic Systems Research*](https://www.tandfonline.com/journals/cesr20).
 
 In that article, we start from the rectangular-choice-of-technology (RCOT) model described by [Duchin & Levine (2011)](https://doi.org/10.1080/09535314.2011.571238), a linear programming model used for scenario analysis within the field of input-output (IO) analysis. That model is based on square IO tables, some elements of which can then be augmented along their column dimension to allow for the choice among multiple alternative technologies to produce a homogeneous output.
 
@@ -87,4 +87,4 @@ Note that if the SUT data in the Excel files is modified, e.g. to include more c
 ---
 
 *by* Maximilian Koslowski (with Edgar Hertwich and Richard Wood)\
-2024-09-13
+2024-12-20

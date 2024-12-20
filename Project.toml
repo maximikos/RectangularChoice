@@ -1,6 +1,6 @@
 name = "RectangularChoice"
 uuid = "3437bde3-39ae-49d5-820d-44651ceecfb0"
-authors = ["<authors>"]
+authors = ["Maximilian Koslowski"]
 version = "0.1.0"
 
 [deps]
